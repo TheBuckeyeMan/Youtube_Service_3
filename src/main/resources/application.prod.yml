@@ -1,0 +1,12 @@
+spring:
+  test: "Prod-test"
+aws:
+  s3:
+    bucket:
+      gpt: ${GPT_BUCKET_NAME}
+      logging: ${LOGGING_BUCKET_NAME}
+      audio:
+    key:
+      gpt: ${GPT_BUCKET_KEY}
+      logging: ${LOGGING_BUCKET_KEY}
+      audio:

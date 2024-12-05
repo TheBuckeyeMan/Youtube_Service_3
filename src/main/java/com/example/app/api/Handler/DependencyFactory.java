@@ -19,7 +19,7 @@ public class DependencyFactory {
     public static S3AsyncClient s3Client() {
         return S3AsyncClient.builder()
                        .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                       .region(Region.US_WEST_2)
+                       .region(Region.US_EAST_2)
                        .httpClientBuilder(AwsCrtAsyncHttpClient.builder())
                        .build();
     }

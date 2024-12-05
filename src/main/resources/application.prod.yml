@@ -1,12 +1,14 @@
 spring:
   test: "Prod-test"
 aws:
+  key:
+    access:
+    secret:
   s3:
     bucket:
-      gpt: ${GPT_BUCKET_NAME}
+      landing: ${LANDING_BUCKET}
       logging: ${LOGGING_BUCKET_NAME}
-      audio:
     key:
       gpt: ${GPT_BUCKET_KEY}
       logging: ${LOGGING_BUCKET_KEY}
-      audio:
+      audio: ${AUDIO_BUCKET_KEY}

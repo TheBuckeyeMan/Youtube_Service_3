@@ -80,7 +80,7 @@ public class ModelAWSPostRequest {
         return request;
 
     } catch (Exception e){
-        //Add in Email 
+        //TODO Add in Email could be due to temp file being to big in size, message contains over 3k charictor or 
         throw new RuntimeException("Error creating AWS Polly Request", e);
     }
 }

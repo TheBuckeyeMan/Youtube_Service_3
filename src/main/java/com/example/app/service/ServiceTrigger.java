@@ -1,6 +1,7 @@
 package com.example.app.service;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ public class ServiceTrigger {
     private GptReformat gptReformat;
     private ModelAWSPostRequest modelAWSPostRequest;
     private MakeAWSPollyRequest makeAWSPollyRequest;
+    private PostFileToS3 postFileToS3;
 
     @Value("${spring.profiles.active}")
     private String environment;
@@ -41,12 +43,16 @@ public class ServiceTrigger {
     @Value("${api.name}")
     private String apiName;
 
+    @Value("${aws.s3.key.audio}")
+    private String audioBucketKey;
 
-    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, ModelAWSPostRequest modelAWSPostRequest, MakeAWSPollyRequest makeAWSPollyRequest){
+
+    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, ModelAWSPostRequest modelAWSPostRequest, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3){
         this.readFile = readFile;
         this.gptReformat = gptReformat;
         this.modelAWSPostRequest = modelAWSPostRequest;
         this.makeAWSPollyRequest = makeAWSPollyRequest;
+        this.postFileToS3 = postFileToS3;
     }
 
     public void TriggerService(){
@@ -64,9 +70,12 @@ public class ServiceTrigger {
         //Service 4: make the request to aws polly save response to mp3 to variable here.
         File audioFile = makeAWSPollyRequest.getAudioFile(postRequestBody, pollyUrl);
         //Service 5: Save the audio file to the aws s3 bucket
-        //Service 6 : add in email error handling
+        postFileToS3.PostFileToS3Bucket(audioFile,landingBucket ,audioBucketKey);
+        log.info("The Service has successfully complete and the audio file is saved in the " + audioBucketKey + " Directory of the " + landingBucket + " Bucket!");
+        //Task 6 : add in email error handling
         //Task 7: implement unit testing
 
+        //s3LoggingService.logMessageToS3("Succcess: Success occured at: " + LocalDateTime.now() + " On: youtube-service-3" + ",");
 
     }
 }

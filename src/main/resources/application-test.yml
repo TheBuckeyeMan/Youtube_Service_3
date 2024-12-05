@@ -1,0 +1,14 @@
+spring:
+  test: "Test-test"
+aws:
+  key:
+    access:
+    secret:
+  s3:
+    bucket:
+      landing: ${LANDING_BUCKET}
+      logging: ${LOGGING_BUCKET_NAME}
+    key:
+      gpt: ${GPT_BUCKET_KEY}
+      logging: ${LOGGING_BUCKET_KEY}
+      audio: ${AUDIO_BUCKET_KEY}

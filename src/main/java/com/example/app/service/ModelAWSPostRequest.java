@@ -14,6 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class ModelAWSPostRequest {
     private static final Logger log = LoggerFactory.getLogger(ModelAWSPostRequest.class);
@@ -21,7 +23,14 @@ public class ModelAWSPostRequest {
     public Map<String,Object> getPostRequest(String url, String message, String awsAccessKey, String awsSecretKey, String awsRegion, String apiName){
         //Define body of the request
         try {
-        String body = String.format("{\"Text\": \"%s\", \"OutputFormat\": \"mp3\", \"VoiceId\": \"Matthew\"}",message);
+        // Build the body using Jackson
+        Map<String, String> payload = new HashMap<>();
+        payload.put("Text", message);
+        payload.put("OutputFormat", "mp3");
+        payload.put("VoiceId", "Matthew");
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String body = objectMapper.writeValueAsString(payload);
         
         //Generate the current timestamp
         Instant now = Instant.now();

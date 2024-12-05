@@ -1,5 +1,6 @@
 package com.example.app.service;
 
+import java.io.File;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ public class ServiceTrigger {
     private ReadFile readFile;
     private GptReformat gptReformat;
     private ModelAWSPostRequest modelAWSPostRequest;
+    private MakeAWSPollyRequest makeAWSPollyRequest;
 
     @Value("${spring.profiles.active}")
     private String environment;
@@ -40,10 +42,11 @@ public class ServiceTrigger {
     private String apiName;
 
 
-    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, ModelAWSPostRequest modelAWSPostRequest){
+    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, ModelAWSPostRequest modelAWSPostRequest, MakeAWSPollyRequest makeAWSPollyRequest){
         this.readFile = readFile;
         this.gptReformat = gptReformat;
         this.modelAWSPostRequest = modelAWSPostRequest;
+        this.makeAWSPollyRequest = makeAWSPollyRequest;
     }
 
     public void TriggerService(){
@@ -58,8 +61,8 @@ public class ServiceTrigger {
         String MessageForApi = gptReformat.removeUnwantedSpaces(gptContents);
         //Service 3: Prepare the Post request to aws POLLY
         Map<String,Object> postRequestBody = modelAWSPostRequest.getPostRequest(pollyUrl, MessageForApi,awsAccessKey,awsSecretKey,awsRegion,apiName);
-
         //Service 4: make the request to aws polly save response to mp3 to variable here.
+        File audioFile = makeAWSPollyRequest.getAudioFile(postRequestBody, pollyUrl);
         //Service 5: Save the audio file to the aws s3 bucket
         //Service 6 : add in email error handling
         //Task 7: implement unit testing

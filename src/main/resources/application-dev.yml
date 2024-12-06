@@ -1,5 +1,5 @@
 spring:
-  test: "dev-test"
+  test: "dev"
 
 aws:
   key:

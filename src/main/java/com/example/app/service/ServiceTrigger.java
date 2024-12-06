@@ -43,9 +43,6 @@ public class ServiceTrigger {
     @Value("${aws.s3.key.audio}")
     private String audioBucketKey;
 
-    
-
-
     public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3){
         this.readFile = readFile;
         this.gptReformat = gptReformat;
@@ -66,7 +63,7 @@ public class ServiceTrigger {
         String MessageForApi = gptReformat.removeUnwantedSpaces(gptContents);
 
         //Service 3: make the request to aws polly save response to mp3 to variable here.
-        File audioFile = makeAWSPollyRequest.getAudioFile(MessageForApi,"Mattew");
+        File audioFile = makeAWSPollyRequest.getAudioFile(MessageForApi,"Matthew");
 
         //Service 4: Save the audio file to the aws s3 bucket
         postFileToS3.PostFileToS3Bucket(audioFile,landingBucket ,audioBucketKey);

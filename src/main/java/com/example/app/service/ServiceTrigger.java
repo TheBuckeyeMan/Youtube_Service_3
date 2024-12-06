@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-
 @Service
 public class ServiceTrigger {
     private static final Logger log = LoggerFactory.getLogger(ServiceTrigger.class);
@@ -59,6 +58,10 @@ public class ServiceTrigger {
         //Initialization Logs
         log.info("The Active Environment is set to: " + environment);
         log.info("Begining to Collect Contents of Fun Fact form S3 Bucket");
+        log.info("The Value of AWS Access Key is: " + awsAccessKey);
+        log.info("The Value of Secret Access is: " + awsSecretKey);
+        log.info("The Value of AWS Region is: " + awsRegion);
+        log.info("The value of the URL Is: " + pollyUrl);
 
         //Trigger Services
         //Service 1: read contents from the AWS S3 bucket save to string variable
@@ -76,6 +79,5 @@ public class ServiceTrigger {
         //Task 7: implement unit testing
 
         //s3LoggingService.logMessageToS3("Succcess: Success occured at: " + LocalDateTime.now() + " On: youtube-service-3" + ",");
-
     }
 }

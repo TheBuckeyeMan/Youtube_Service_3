@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class MakeAWSPollyRequest {
     private static final Logger log = LoggerFactory.getLogger(MakeAWSPollyRequest.class);
 
-
     public File getAudioFile(Map<String,Object> requestDetails, String url){
         Map<String, String> headers = (Map<String, String>) requestDetails.get("headers");
         String body = (String) requestDetails.get("body");

@@ -61,6 +61,7 @@ public class ServiceTrigger {
         log.info("The Value of AWS Access Key is: " + awsAccessKey);
         log.info("The Value of Secret Access is: " + awsSecretKey);
         log.info("The Value of AWS Region is: " + awsRegion);
+        log.info("The value of the URL Is: " + pollyUrl);
 
         //Trigger Services
         //Service 1: read contents from the AWS S3 bucket save to string variable

@@ -69,9 +69,9 @@ public class ServiceTrigger {
         //Service 2: Clean up contents of that string, Anywhere we have two spaces in a row we need to delete the double spaces in the string, save to string
         String MessageForApi = gptReformat.removeUnwantedSpaces(gptContents);
         //Service 3: Prepare the Post request to aws POLLY
-        Map<String,Object> postRequestBody = modelAWSPostRequest.getPostRequest(pollyUrl, MessageForApi,awsAccessKey,awsSecretKey,awsRegion,apiName);
+        Map<String,Object> postRequestBody = modelAWSPostRequest.getPostRequest(pollyUrl, MessageForApi,awsAccessKey,awsSecretKey,awsRegion,apiName); //may not need
         //Service 4: make the request to aws polly save response to mp3 to variable here.
-        File audioFile = makeAWSPollyRequest.getAudioFile(postRequestBody, pollyUrl);
+        File audioFile = makeAWSPollyRequest.getAudioFile(MessageForApi);
         //Service 5: Save the audio file to the aws s3 bucket
         postFileToS3.PostFileToS3Bucket(audioFile,landingBucket ,audioBucketKey);
         log.info("The Service has successfully complete and the audio file is saved in the " + audioBucketKey + " Directory of the " + landingBucket + " Bucket!");

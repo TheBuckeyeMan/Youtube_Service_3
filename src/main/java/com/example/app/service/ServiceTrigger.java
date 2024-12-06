@@ -76,6 +76,5 @@ public class ServiceTrigger {
         //Task 7: implement unit testing
 
         //s3LoggingService.logMessageToS3("Succcess: Success occured at: " + LocalDateTime.now() + " On: youtube-service-3" + ",");
-
     }
 }

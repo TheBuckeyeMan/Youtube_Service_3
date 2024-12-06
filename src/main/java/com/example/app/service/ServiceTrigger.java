@@ -58,6 +58,9 @@ public class ServiceTrigger {
         //Initialization Logs
         log.info("The Active Environment is set to: " + environment);
         log.info("Begining to Collect Contents of Fun Fact form S3 Bucket");
+        log.info("The Value of AWS Access Key is: " + awsAccessKey);
+        log.info("The Value of Secret Access is: " + awsSecretKey);
+        log.info("The Value of AWS Region is: " + awsRegion);
 
         //Trigger Services
         //Service 1: read contents from the AWS S3 bucket save to string variable

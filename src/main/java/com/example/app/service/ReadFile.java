@@ -14,11 +14,11 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 public class ReadFile {
     private static final Logger log = LoggerFactory.getLogger(ReadFile.class);
     private final S3AsyncClient s3Client;
-    //TODO private S3LoggingService s3LoggingService;
+    private S3LoggingService s3LoggingService;
 
-    public ReadFile(S3AsyncClient s3Client){
+    public ReadFile(S3AsyncClient s3Client, S3LoggingService s3LoggingService){
         this.s3Client = s3Client;
-    //TODO    this.s3LoggingService = s3LoggingService;
+        this.s3LoggingService = s3LoggingService;
     }
 
     public String getBasicFileContents(String landingBucket, String gptBucketKey){
@@ -42,12 +42,12 @@ public class ReadFile {
                 return basicFileContent;
             } else {
                 log.error("Error: Basic File Content is blank, or was unable to be retrieved form source");
-             //TODO   s3LoggingService.logMessageToS3("Error: Basic File Content is blank, or was unable to be retrieved form source - line 46 on ReadFile.java: " + LocalDate.now() + " On: youtube-service-2" + ",");
+                s3LoggingService.logMessageToS3("Error: Basic File Content is blank, or was unable to be retrieved form source - line 45 on ReadFile.java: " + LocalDate.now() + " On: youtube-service-3" + ",");
                 return "Error: Basic File Content is blank, or was unable to be retrieved form source";
             }
         } catch (Exception e){
             log.error("Error Reading file form S3: {}", e.getMessage(),e);
-        //TODO    s3LoggingService.logMessageToS3("Error: Error Reading file form S3 Line 53 of ReadFile.java: " + LocalDate.now() + " On: youtube-service-2" + ",");
+            s3LoggingService.logMessageToS3("Error: Error Reading file form S3 Line 50 of ReadFile.java: " + LocalDate.now() + " On: youtube-service-3" + ",");
             return "Error: Unable to read basic file contents.";
         }
     }

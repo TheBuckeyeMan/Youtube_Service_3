@@ -15,6 +15,7 @@ public class ServiceTrigger {
     private GptReformat gptReformat;
     private MakeAWSPollyRequest makeAWSPollyRequest;
     private PostFileToS3 postFileToS3;
+    private S3LoggingService s3LoggingService;
 
     @Value("${spring.profiles.active}")
     private String environment;
@@ -43,11 +44,12 @@ public class ServiceTrigger {
     @Value("${aws.s3.key.audio}")
     private String audioBucketKey;
 
-    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3){
+    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3, S3LoggingService s3LoggingService){
         this.readFile = readFile;
         this.gptReformat = gptReformat;
         this.makeAWSPollyRequest = makeAWSPollyRequest;
         this.postFileToS3 = postFileToS3;
+        this.s3LoggingService = s3LoggingService;
     }
 
     public void TriggerService(){
@@ -68,9 +70,9 @@ public class ServiceTrigger {
         //Service 4: Save the audio file to the aws s3 bucket
         postFileToS3.PostFileToS3Bucket(audioFile,landingBucket ,audioBucketKey);
         log.info("The Service has successfully complete and the audio file is saved in the " + audioBucketKey + " Directory of the " + landingBucket + " Bucket!");
-        //Task 5 : add in email error handling
-        //Task 6: implement unit testing
+        s3LoggingService.logMessageToS3("Succcess: Success occured at: " + LocalDateTime.now() + " On: youtube-service-3" + ",");
+        log.info("Final: The Lambda has triggered successfully and the audio file is now saved in the S3 Bucket: " + landingBucket);
 
-        //s3LoggingService.logMessageToS3("Succcess: Success occured at: " + LocalDateTime.now() + " On: youtube-service-3" + ",");
+        //TODO Task 6: implement unit testing
     }
 }

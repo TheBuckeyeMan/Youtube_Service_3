@@ -3,6 +3,8 @@ package com.example.app.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,11 @@ import software.amazon.awssdk.services.polly.model.SynthesizeSpeechResponse;
 @Service
 public class MakeAWSPollyRequest {
     private static final Logger log = LoggerFactory.getLogger(MakeAWSPollyRequest.class);
+    private S3LoggingService s3LoggingService;
+
+    public MakeAWSPollyRequest(S3LoggingService s3LoggingService){
+        this.s3LoggingService = s3LoggingService;
+    }
 
     public File getAudioFile(String message, String voiceid) {
         File audioFile = null;
@@ -51,7 +58,7 @@ public class MakeAWSPollyRequest {
 
         } catch (Exception e) {
             log.error("Error while interacting with AWS Polly", e);
-            //TODO Add in email for error handling here
+            s3LoggingService.logMessageToS3("Error: Error while interacting with AWS Polly - line 62 on MakeAWSPollyRequest.java: " + LocalDate.now() + " On: youtube-service-3" + ",");
             throw new RuntimeException("Error while interacting with AWS Polly", e);
         }
 

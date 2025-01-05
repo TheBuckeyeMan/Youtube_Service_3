@@ -16,6 +16,7 @@ public class ServiceTrigger {
     private MakeAWSPollyRequest makeAWSPollyRequest;
     private PostFileToS3 postFileToS3;
     private S3LoggingService s3LoggingService;
+    private SpeechMarks speechMarks;
 
     @Value("${spring.profiles.active}")
     private String environment;
@@ -44,12 +45,16 @@ public class ServiceTrigger {
     @Value("${aws.s3.key.audio}")
     private String audioBucketKey;
 
-    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3, S3LoggingService s3LoggingService){
+    @Value("${aws.s3.key.speech}")
+    private String speechBucketKey;
+
+    public ServiceTrigger(ReadFile readFile, GptReformat gptReformat, MakeAWSPollyRequest makeAWSPollyRequest, PostFileToS3 postFileToS3, S3LoggingService s3LoggingService, SpeechMarks speechMarks){
         this.readFile = readFile;
         this.gptReformat = gptReformat;
         this.makeAWSPollyRequest = makeAWSPollyRequest;
         this.postFileToS3 = postFileToS3;
         this.s3LoggingService = s3LoggingService;
+        this.speechMarks = speechMarks;
     }
 
     public void TriggerService(){
@@ -63,6 +68,16 @@ public class ServiceTrigger {
 
         //Service 2: Clean up contents of that string, Anywhere we have two spaces in a row we need to delete the double spaces in the string, save to string
         String MessageForApi = gptReformat.removeUnwantedSpaces(gptContents);
+
+        //Service3: Get the speech-marks response from aws polly and save to json file
+        log.info("Attempting to get Speech Marks");
+        File speechMarksFile = speechMarks.getSpeechMarksFile(MessageForApi, "Matthew");
+        log.info("Speech marks successfully retrieved");
+
+        //Service4: save the response form aws polly speeech-marks to s3 bucket
+        log.info("Attempting to save Speech-Marks to S3");
+        postFileToS3.PostFileToS3Bucket(speechMarksFile,landingBucket ,speechBucketKey);
+        log.info("Speech-Marks saved to S3");
 
         //Service 3: make the request to aws polly save response to mp3 to variable here.
         File audioFile = makeAWSPollyRequest.getAudioFile(MessageForApi,"Matthew");

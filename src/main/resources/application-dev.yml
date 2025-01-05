@@ -13,6 +13,7 @@ aws:
       gpt: ${GPT_BUCKET_KEY}
       logging: ${LOGGING_BUCKET_KEY}
       audio: ${AUDIO_BUCKET_KEY}
+      speech: ${SPEECH_BUCKET_KEY}
   region: ${AWS_REGION}
 api:
   name: ${API_NAME}
